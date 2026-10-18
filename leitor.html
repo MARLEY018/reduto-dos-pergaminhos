@@ -4,21 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reduto dos Pergaminhos - Leitura</title>
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 </head>
 <body class="corpo-leitor">
 
-    <div class="livro-aberto">
-        <div class="pagina-esquerda">
-            <h2>Índice do Pergaminho</h2>
-            <p>Carregando as crônicas...</p>
+    <!-- Vagalumes / poeira flutuando no cenário -->
+    <canvas id="particulas"></canvas>
+
+    <!-- Botões no canto: música e tela cheia -->
+    <div class="hud-topo">
+        <button id="btn-musica" class="botao-hud" title="Ligar/desligar música">🔇</button>
+        <button id="btn-tela-cheia" class="botao-hud" title="Tela cheia">⛶</button>
+    </div>
+
+    <!-- Container geral que alinha seta esquerda, livro e seta direita lado a lado -->
+    <div id="container-leitura-geral">
+        <button id="btn-anterior" class="botao-seta">◀</button>
+
+        <div id="book-container">
+            <div id="meu-livro"></div>
         </div>
 
-        <div class="pagina-direita">
-            <div id="visualizador-pdf">
-                <p>Nenhum pergaminho desdobrado ainda.</p>
-            </div>
-        </div>
+        <button id="btn-proximo" class="botao-seta">▶</button>
+    </div>
+
+    <!-- Contador de páginas -->
+    <div id="contador-paginas" class="contador-paginas"></div>
+
+    <!-- Tela de carregamento: fica FORA do container do livro e com a div fechada -->
+    <div id="carregando-grimorio" class="aviso-carregando">
+        <p>📜 Desdobrando as páginas do pergaminho antigo... Aguarde, mago.</p>
     </div>
 
     <script src="leitor.js"></script>

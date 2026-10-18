@@ -1,32 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Tagesschrift&display=swap');
 
-*{
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+/* Configuração global e reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.tagesschrift-regular {
-  font-family: "Tagesschrift", system-ui;
-  font-weight: 400;
-  font-style: normal;
-}
-
-   body {
+html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* Trava qualquer rolagem indesejada na tela */
     font-family: 'Tagesschrift', sans-serif;
-    
-    /* Configuração da imagem de fundo */
+}
+
+/* Tela inicial (index.html) */
+body {
     background-image: url('img/gandalf.jpg.jfif');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    
-    /* Centralização do livro na tela */
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
+    background-color: #120d09;
 }
 
 .livro-pergaminho {
@@ -37,11 +34,13 @@ box-sizing: border-box;
     max-width: 600px;
     width: 90%;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
 }
 
 #input-arquivo {
     display: none;
 }
+
 .botao-pergaminho {
     display: inline-block;
     padding: 12px 24px;
@@ -55,17 +54,223 @@ box-sizing: border-box;
     transition: all 0.3s ease;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-
     margin-top: 25px;
-
 }
 
 .botao-pergaminho:hover {
     background-color: #c29e6b;
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-
 }
+
 .container-botao {
     margin-top: 20px;
+}
+
+/* ==========================================
+   Estilos específicos da página de leitura (leitor.html)
+   ========================================== */
+.corpo-leitor {
+    background-image: url('img/gandalf.jpg.jfif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    background-color: #120d09;
+}
+
+/* Escurece as bordas do cenário para o livro ganhar destaque */
+.corpo-leitor::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center,
+                rgba(0, 0, 0, 0.15) 0%,
+                rgba(0, 0, 0, 0.75) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Vagalumes */
+#particulas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Container geral que alinha seta esquerda, livro e seta direita lado a lado */
+#container-leitura-geral {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    z-index: 10;
+}
+
+/* Capa de couro atrás do livro */
+#book-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 752px;   /* 700 do livro + 2 x (4 de borda + 22 de padding) */
+    height: 552px;
+    padding: 22px;
+    background: linear-gradient(145deg, #4a2e1a, #2c1e11);
+    border: 4px solid #b08d57;
+    border-radius: 14px;
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.7),
+        inset 0 0 25px rgba(0, 0, 0, 0.6);
+    animation: vela 4s ease-in-out infinite alternate;
+}
+
+/* Luz de vela pulsando em volta do livro */
+@keyframes vela {
+    from { box-shadow: 0 20px 50px rgba(0,0,0,.7), inset 0 0 25px rgba(0,0,0,.6), 0 0 40px rgba(255,170,60,.15); }
+    to   { box-shadow: 0 20px 50px rgba(0,0,0,.7), inset 0 0 25px rgba(0,0,0,.6), 0 0 70px rgba(255,170,60,.35); }
+}
+
+#meu-livro {
+    width: 700px;
+    height: 500px;
+}
+
+.pagina-livro {
+    background-color: #f4ecd8;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Faz o PDF parecer papel antigo: o branco some e vira pergaminho */
+.pagina-livro img {
+    mix-blend-mode: multiply;
+    filter: sepia(0.25) contrast(1.05);
+}
+
+/* Botões de setas temáticos */
+.botao-seta {
+    background-color: rgba(92, 58, 33, 0.9);
+    color: #f4ecd8;
+    border: 2px solid #b08d57;
+    font-size: 24px;
+    padding: 15px 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 50;
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.botao-seta:hover {
+    transform: scale(1.1);
+    background-color: #b08d57;
+    color: #2c1e11;
+}
+
+/* Botões do canto (música e tela cheia) */
+.hud-topo {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 10px;
+    z-index: 60;
+}
+
+.botao-hud {
+    width: 44px;
+    height: 44px;
+    background-color: rgba(92, 58, 33, 0.9);
+    color: #f4ecd8;
+    border: 2px solid #b08d57;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.botao-hud:hover {
+    transform: scale(1.1);
+    background-color: #b08d57;
+    color: #2c1e11;
+}
+
+/* Contador de páginas */
+.contador-paginas {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 18px;
+    background-color: rgba(18, 13, 9, 0.75);
+    color: #f4ecd8;
+    border: 1px solid #b08d57;
+    border-radius: 20px;
+    font-size: 16px;
+    z-index: 60;
+}
+
+/* Tela de carregamento medieval cobrindo a tela inteira */
+.aviso-carregando {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(18, 13, 9, 0.95);
+    color: #f4ecd8;
+    font-family: 'Tagesschrift', sans-serif;
+    font-size: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 999;
+    transition: opacity 0.5s ease;
+}
+
+.aviso-carregando.escondido {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Estilo refinado para o texto e a lista da tela inicial */
+.livro-pergaminho h1 {
+    font-size: 32px;
+    color: #2c1e11;
+    margin-bottom: 15px;
+}
+
+.instrucao-texto {
+    font-size: 18px;
+    color: #2c1e11;
+    margin-bottom: 15px;
+}
+
+.lista-pergaminho {
+    text-align: left;
+    display: inline-block;
+    margin: 0 auto 10px auto;
+    padding-left: 20px;
+    color: #2c1e11;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.lista-pergaminho li {
+    margin-bottom: 6px;
 }
