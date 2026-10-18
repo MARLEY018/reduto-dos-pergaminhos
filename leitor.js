@@ -1,39 +1,11 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-/* ==========================================
-   Sons (arquivos opcionais: se não existirem, o site funciona igual)
-   ========================================== */
-const somPagina = new Audio('som/pagina.mp3');
+
+const somPagina = new Audio('som/pag.mp3.mp3');
 somPagina.volume = 0.5;
 
-const musicaFundo = new Audio('som/musica.mp3');
-musicaFundo.loop = true;
-musicaFundo.volume = 0.25;
-
-const btnMusica = document.getElementById('btn-musica');
 const btnTelaCheia = document.getElementById('btn-tela-cheia');
 const contador = document.getElementById('contador-paginas');
-
-let musicaLigada = localStorage.getItem('musicaLigada') === '1';
-
-function atualizarIconeMusica() {
-    btnMusica.textContent = musicaLigada ? '🔊' : '🔇';
-}
-
-function tocarMusica() {
-    // O navegador pode bloquear o som até o primeiro clique; por isso o catch
-    musicaFundo.play().catch(() => {
-        musicaLigada = false;
-        atualizarIconeMusica();
-    });
-}
-
-btnMusica.onclick = () => {
-    musicaLigada = !musicaLigada;
-    localStorage.setItem('musicaLigada', musicaLigada ? '1' : '0');
-    if (musicaLigada) tocarMusica(); else musicaFundo.pause();
-    atualizarIconeMusica();
-};
 
 btnTelaCheia.onclick = () => {
     if (document.fullscreenElement) {
@@ -43,12 +15,36 @@ btnTelaCheia.onclick = () => {
     }
 };
 
-atualizarIconeMusica();
-if (musicaLigada) tocarMusica();
 
-/* ==========================================
-   Vagalumes flutuando no fundo
-   ========================================== */
+let zoom = 1;
+const ZOOM_MIN = 0.5;
+const ZOOM_MAX = 1.5;
+const caixaLivro = document.getElementById('book-container');
+
+function aplicarZoom() {
+    caixaLivro.style.transform = 'scale(' + zoom + ')';
+    caixaLivro.style.transformOrigin = 'center center';
+}
+
+document.getElementById('zoomIn').onclick = () => {
+    zoom = Math.min(ZOOM_MAX, +(zoom + 0.1).toFixed(2));
+    aplicarZoom();
+};
+
+document.getElementById('zoomOut').onclick = () => {
+    zoom = Math.max(ZOOM_MIN, +(zoom - 0.1).toFixed(2));
+    aplicarZoom();
+};
+
+// Ctrl + roda do mouse também controla o zoom
+document.addEventListener('wheel', (e) => {
+    if (!e.ctrlKey) return;
+    e.preventDefault();
+    zoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, +(zoom + (e.deltaY < 0 ? 0.1 : -0.1)).toFixed(2)));
+    aplicarZoom();
+}, { passive: false });
+
+
 (function iniciarParticulas() {
     const canvas = document.getElementById('particulas');
     if (!canvas) return;
@@ -84,7 +80,7 @@ if (musicaLigada) tocarMusica();
             if (v.y < 0) v.y = altura;
             if (v.y > altura) v.y = 0;
 
-            const brilho = (Math.sin(v.fase) + 1) / 2; // 0 a 1
+            const brilho = (Math.sin(v.fase) + 1) / 2;
             ctx.beginPath();
             ctx.arc(v.x, v.y, v.raio, 0, Math.PI * 2);
             ctx.fillStyle = 'rgba(255, 200, 100, ' + (0.15 + brilho * 0.6) + ')';
@@ -97,9 +93,7 @@ if (musicaLigada) tocarMusica();
     animar();
 })();
 
-/* ==========================================
-   Busca o PDF salvo no IndexedDB pela página inicial
-   ========================================== */
+
 function pegarPdf() {
     return new Promise((resolve, reject) => {
         const req = indexedDB.open('reduto', 1);
@@ -113,9 +107,7 @@ function pegarPdf() {
     });
 }
 
-/* ==========================================
-   Converte o PDF em páginas e monta o livro
-   ========================================== */
+
 async function carregarEConverterPdf(origemPdf, chavePagina) {
     const avisoCarregando = document.getElementById('carregando-grimorio');
     const elementoLivro = document.getElementById('meu-livro');
@@ -165,7 +157,6 @@ async function carregarEConverterPdf(origemPdf, chavePagina) {
         const tempoRestante = Math.max(0, 2000 - tempoDecorrido);
 
         setTimeout(() => {
-            // Lembra a última página lida deste livro
             let paginaSalva = parseInt(localStorage.getItem(chavePagina), 10);
             if (isNaN(paginaSalva) || paginaSalva < 0 || paginaSalva >= totalPaginas) paginaSalva = 0;
 
@@ -189,7 +180,6 @@ async function carregarEConverterPdf(origemPdf, chavePagina) {
             }
             atualizarContador(paginaSalva);
 
-            // Som e contador ao virar a página
             pageFlip.on('flip', (e) => {
                 atualizarContador(e.data);
                 somPagina.currentTime = 0;
@@ -198,11 +188,9 @@ async function carregarEConverterPdf(origemPdf, chavePagina) {
 
             avisoCarregando.classList.add('escondido');
 
-            // Setas da tela
             document.getElementById('btn-anterior').onclick = () => pageFlip.flipPrev();
             document.getElementById('btn-proximo').onclick = () => pageFlip.flipNext();
 
-            // Setas do teclado
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowRight') pageFlip.flipNext();
                 if (e.key === 'ArrowLeft') pageFlip.flipPrev();
@@ -216,9 +204,7 @@ async function carregarEConverterPdf(origemPdf, chavePagina) {
     }
 }
 
-/* ==========================================
-   Início
-   ========================================== */
+
 (async () => {
     try {
         const arquivo = await pegarPdf();

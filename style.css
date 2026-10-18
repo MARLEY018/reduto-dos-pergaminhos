@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Tagesschrift&display=swap');
 
-/* Configuração global e reset */
 * {
     margin: 0;
     padding: 0;
@@ -10,16 +9,11 @@
 html, body {
     width: 100vw;
     height: 100vh;
-    overflow: hidden; /* Trava qualquer rolagem indesejada na tela */
+    overflow: hidden; 
     font-family: 'Tagesschrift', sans-serif;
 }
 
-/* Tela inicial (index.html) */
 body {
-    background-image: url('img/gandalf.jpg.jfif');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,11 +61,9 @@ body {
     margin-top: 20px;
 }
 
-/* ==========================================
-   Estilos específicos da página de leitura (leitor.html)
-   ========================================== */
+
 .corpo-leitor {
-    background-image: url('img/gandalf.jpg.jfif');
+    background-image: url('img/gandalf2.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -85,7 +77,6 @@ body {
     background-color: #120d09;
 }
 
-/* Escurece as bordas do cenário para o livro ganhar destaque */
 .corpo-leitor::before {
     content: "";
     position: absolute;
@@ -97,7 +88,6 @@ body {
     z-index: 1;
 }
 
-/* Vagalumes */
 #particulas {
     position: absolute;
     inset: 0;
@@ -107,7 +97,6 @@ body {
     z-index: 2;
 }
 
-/* Container geral que alinha seta esquerda, livro e seta direita lado a lado */
 #container-leitura-geral {
     display: flex;
     align-items: center;
@@ -116,13 +105,13 @@ body {
     z-index: 10;
 }
 
-/* Capa de couro atrás do livro */
+
 #book-container {
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    width: 752px;   /* 700 do livro + 2 x (4 de borda + 22 de padding) */
+    width: 752px;    
     height: 552px;
     padding: 22px;
     background: linear-gradient(145deg, #4a2e1a, #2c1e11);
@@ -134,7 +123,6 @@ body {
     animation: vela 4s ease-in-out infinite alternate;
 }
 
-/* Luz de vela pulsando em volta do livro */
 @keyframes vela {
     from { box-shadow: 0 20px 50px rgba(0,0,0,.7), inset 0 0 25px rgba(0,0,0,.6), 0 0 40px rgba(255,170,60,.15); }
     to   { box-shadow: 0 20px 50px rgba(0,0,0,.7), inset 0 0 25px rgba(0,0,0,.6), 0 0 70px rgba(255,170,60,.35); }
@@ -154,13 +142,11 @@ body {
     align-items: center;
 }
 
-/* Faz o PDF parecer papel antigo: o branco some e vira pergaminho */
 .pagina-livro img {
     mix-blend-mode: multiply;
     filter: sepia(0.25) contrast(1.05);
 }
 
-/* Botões de setas temáticos */
 .botao-seta {
     background-color: rgba(92, 58, 33, 0.9);
     color: #f4ecd8;
@@ -180,7 +166,6 @@ body {
     color: #2c1e11;
 }
 
-/* Botões do canto (música e tela cheia) */
 .hud-topo {
     position: absolute;
     top: 16px;
@@ -209,7 +194,6 @@ body {
     color: #2c1e11;
 }
 
-/* Contador de páginas */
 .contador-paginas {
     position: absolute;
     bottom: 22px;
@@ -224,7 +208,6 @@ body {
     z-index: 60;
 }
 
-/* Tela de carregamento medieval cobrindo a tela inteira */
 .aviso-carregando {
     position: fixed;
     top: 0;
@@ -248,7 +231,6 @@ body {
     pointer-events: none;
 }
 
-/* Estilo refinado para o texto e a lista da tela inicial */
 .livro-pergaminho h1 {
     font-size: 32px;
     color: #2c1e11;
@@ -273,4 +255,118 @@ body {
 
 .lista-pergaminho li {
     margin-bottom: 6px;
+}
+
+
+.fundo-animado {
+    position: fixed;
+    inset: -6%;
+    background: url('img/gandalf.jpg.jfif') center / cover no-repeat;
+    z-index: 0;
+    will-change: transform;
+    animation: respirar 40s ease-in-out infinite alternate;
+    transition: translate 0.3s ease-out;
+}
+
+.fundo-animado::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center,
+                rgba(0,0,0,0.05) 30%,
+                rgba(0,0,0,0.55) 100%);
+}
+
+@keyframes respirar {
+    from { transform: scale(1); }
+    to   { transform: scale(1.12) translate(-1.5%, -1%); }
+}
+
+.livro-pergaminho {
+    position: relative;
+    z-index: 10;
+    animation:
+        entrar 1.2s cubic-bezier(.2, .8, .2, 1) both,
+        flutuar 6s ease-in-out 1.2s infinite alternate;
+}
+
+@keyframes entrar {
+    from { opacity: 0; transform: translateY(50px) scale(0.94); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes flutuar {
+    from { transform: translateY(0);    box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 25px rgba(255,170,60,.10); }
+    to   { transform: translateY(-8px); box-shadow: 0 18px 40px rgba(0,0,0,.5), 0 0 55px rgba(255,170,60,.30); }
+}
+
+.livro-pergaminho h1 {
+    background: linear-gradient(90deg,
+        #2c1e11 0%, #2c1e11 40%, #c9992f 50%, #2c1e11 60%, #2c1e11 100%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: brilho-titulo 5s linear infinite;
+}
+
+@keyframes brilho-titulo {
+    from { background-position: 100% 0; }
+    to   { background-position: -100% 0; }
+}
+
+.lista-pergaminho li {
+    opacity: 0;
+    animation: surgir 0.8s ease-out forwards;
+}
+.lista-pergaminho li:nth-child(1) { animation-delay: 0.9s; }
+.lista-pergaminho li:nth-child(2) { animation-delay: 1.2s; }
+.lista-pergaminho li:nth-child(3) { animation-delay: 1.5s; }
+
+@keyframes surgir {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.botao-pergaminho {
+    position: relative;
+    overflow: hidden;
+    animation: pulsar 2.5s ease-in-out infinite;
+}
+
+.botao-pergaminho::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.55), transparent);
+    transform: skewX(-20deg);
+}
+
+.botao-pergaminho:hover::after {
+    left: 130%;
+    transition: left 0.7s ease;
+}
+
+@keyframes pulsar {
+    0%, 100% { box-shadow: 0 4px 6px rgba(0,0,0,.2), 0 0 0 0 rgba(212,181,133,.6); }
+    50%      { box-shadow: 0 4px 6px rgba(0,0,0,.2), 0 0 0 14px rgba(212,181,133,0); }
+}
+
+.livro-pergaminho.saindo {
+    animation: sair 0.8s ease-in forwards;
+}
+
+@keyframes sair {
+    to { opacity: 0; transform: scale(1.08) translateY(-20px); filter: blur(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fundo-animado, .livro-pergaminho, .livro-pergaminho h1,
+    .botao-pergaminho, .lista-pergaminho li {
+        animation: none;
+        opacity: 1;
+    }
 }
