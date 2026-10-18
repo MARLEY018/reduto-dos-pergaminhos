@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Tagesschrift&display=swap');
+
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+.tagesschrift-regular {
+  font-family: "Tagesschrift", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+   body {
+    font-family: 'Tagesschrift', sans-serif;
+    
+    /* Configuração da imagem de fundo */
+    background-image: url('img/gandalf.jpg.jfif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Centralização do livro na tela */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.livro-pergaminho {
+    background-color: rgba(244, 236, 216, 0.85);
+    border: 3px solid #5c3a21;
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+#input-arquivo {
+    display: none;
+}
+.botao-pergaminho {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #d4b585;
+    color: #2c1e11;
+    border: 2px solid #5c3a21;
+    border-radius: 6px;
+    font-family: 'Tagesschrift', sans-serif;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+    margin-top: 25px;
+
+}
+
+.botao-pergaminho:hover {
+    background-color: #c29e6b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+
+}
+.container-botao {
+    margin-top: 20px;
+}
